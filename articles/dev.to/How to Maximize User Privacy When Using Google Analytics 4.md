@@ -67,3 +67,27 @@ Google Analytics 4 is not an analytics tool. It's an advertising and marketing t
 
 That's the only framing I can make that explains why its defaults are the way they are.
 
+P.S.
+
+For web, here's what that final step looks like. You need to add these script tags so they're the first children of the head element.
+
+```html
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-AAAAAAAAA"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+
+          gtag('consent', 'default', {
+            'analytics_storage': 'denied'
+          });
+
+          gtag('js', new Date());
+
+          gtag('config', 'AAAAAAAAA');
+        </script>
+```
+
+The key edit to what Google Analytics gave me was to add that gtag call denying consent for analytics immediately after the gtag function was declared. That prevents all subsequent calls from setting cookies. It also seems to prevent any data from being saved at all in Google Analytics (though data can be sent there), so you'll unfortunately have to conditionally re-enable it to make Google Analytics be of any use.
+
+I replaced the unique id Google Analytics gave me with a sequence of 9 A's because might as well avoid abuse
