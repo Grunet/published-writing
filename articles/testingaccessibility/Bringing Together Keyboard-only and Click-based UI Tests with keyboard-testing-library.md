@@ -6,6 +6,7 @@ As covered in Marcy Sutton’s Testing Accessibility workshops, it’s impactful
 
 You can do so with the Testing Library tools you’re likely already familiar with, as shown in this example lifted from the course:
 
+```js
 it('can be operated with the keyboard and assistive tech', async () => { let clicked = false render(<IconButton name="Fling it" onClick={()=> { clicked = true }} />) const button = screen.getByRole('button') await userEvent.tab() await userEvent.keyboard('[Enter]') expect(clicked).toBe(true) })
 
 it('can be operated with the keyboard and assistive tech', async () => {
@@ -16,6 +17,7 @@ it('can be operated with the keyboard and assistive tech', async () => {
     await userEvent.keyboard('[Enter]')
     expect(clicked).toBe(true)
 })
+```
 
 Adding more tests like this will help ensure your UI remains keyboard accessible as it continues to evolve.
 But What About My Existing Click-based Tests?
@@ -62,6 +64,7 @@ If it can’t find the target element, it will throw an error.
 
 Rewriting the example from the introduction, the calls to userEvent.tab and userEvent.keyboard can be replaced with one call to keyboardOnlyUserEvent.navigateToAndPressEnter:
 
+```js
 it('can be operated with the keyboard and assistive tech', async () => { let clicked = false render(<IconButton name="Fling it" onClick={()=> { clicked = true }} />) const button = screen.getByRole('button') // await userEvent.tab() // await userEvent.keyboard('[Enter]') await keyboardOnlyUserEvent.navigateToAndPressEnter(button) expect(clicked).toBe(true) })
 
 it('can be operated with the keyboard and assistive tech', async () => {
@@ -73,10 +76,11 @@ it('can be operated with the keyboard and assistive tech', async () => {
   await keyboardOnlyUserEvent.navigateToAndPressEnter(button)
   expect(clicked).toBe(true)
 })
-
+```
 
 To enable switching between being click-based and keyboard-based, keyboardOnlyUserEvent.navigateToAndPressEnter can be conditionally replaced with userEvent.click depending on the presence of an environment variable:
 
+```js
 if (process.env["USE_KEYBOARD"]) { jest.spyOn(userEvent, "click") .mockImplementation(keyboardOnlyUserEvent.navigateToAndPressEnter); } it('can click the button', async () => { let clicked = false render(<IconButton name="Fling it" onClick={()=> { clicked = true }} />) const button = screen.getByRole('button') // await keyboardOnlyUserEvent.navigateToAndPressEnter(button) await userEvent.click(button) expect(clicked).toBe(true) })
 
 if (process.env["USE_KEYBOARD"]) {
@@ -92,6 +96,7 @@ it('can click the button', async () => {
   await userEvent.click(button)
   expect(clicked).toBe(true)
 })
+```
 
 This enables the test suite to run once without the environment variable set, executing the click-based versions of the tests. When it’s run again with the environment variable set, the keyboard-based versions of the tests will be executed.
 
