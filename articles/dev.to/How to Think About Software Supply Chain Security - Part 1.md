@@ -68,8 +68,12 @@ The former helps increase awareness of all the pieces comprising the software, a
 
 The latter will help you become aware before merging a Dependabot dependency update PR that may contain malicious code.
 
-## Summary
+## Takeaways
 
-These classifications can be applied to other techniques of software supply chain security too.
+Risk is the primitive to use when thinking about software supply chain security.
+
+Thinking about the risk a technique or tool impacts can make it easier to reason about.
+
+For more on this, including more practical examples, check out [Part 2 of this series](https://dev.to/grunet/how-to-think-about-software-supply-chain-security-part-2-964).
 
 To take a deeper dive into the world of software supply chain security, check out https://slsa.dev/
